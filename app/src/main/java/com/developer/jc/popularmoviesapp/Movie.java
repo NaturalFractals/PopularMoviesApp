@@ -19,8 +19,10 @@ public class Movie {
     }
 
     public String getFullPoster() {
-        return "http://image.tmdb.org/t/p/" + "w185" + posterPath;
+        return "http://image.tmdb.org/t/p/" + "w500" + posterPath;
     }
+
+    public String getDeatilFullPoster() { return "http://image.tmdb.org/t/p/" + "w185" + posterPath; }
 
     public String getOverView() {
         return overView;

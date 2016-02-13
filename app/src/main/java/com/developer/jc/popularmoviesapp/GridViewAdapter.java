@@ -20,10 +20,13 @@ import java.util.List;
 public class GridViewAdapter extends BaseAdapter{
     private Context mContext;
     private Movie[] mMovieList;
-
+    private LayoutInflater inflater;
     public GridViewAdapter(Context context, Movie[] movies) {
+        super();
         this.mContext = context;
         this.mMovieList = movies;
+
+        inflater = LayoutInflater.from(mContext);
     }
 
     @Override
@@ -43,16 +46,17 @@ public class GridViewAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
 
         if(convertView == null){
-            imageView = new ImageView(mContext);
-        } else {
-            imageView = (ImageView) convertView;
+            convertView = inflater.inflate(R.layout.images, parent, false);
         }
 
-        Picasso.with(mContext).load(mMovieList[position].getPosterPath()).into(imageView);
-        return imageView;
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
+        String url = mMovieList[position].getFullPoster();
+        Picasso.with(mContext).load(url)
+                .into(imageView);
+
+        return convertView;
     }
 }
 

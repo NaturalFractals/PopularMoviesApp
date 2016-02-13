@@ -1,8 +1,10 @@
 package com.developer.jc.popularmoviesapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -25,11 +27,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.prefs.PreferenceChangeListener;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements Preference.OnPreferenceChangeListener{
     // List of movie objects
     Movie[] movies = new Movie[20];
     // GridViewAdapter
@@ -85,6 +88,11 @@ public class MainActivityFragment extends Fragment {
         fetchMovies.execute();
     }
 
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        return false;
+    }
+
     public class FetchMovies extends AsyncTask<Void, Void, Void> {
         BufferedReader reader;
         HttpURLConnection urlConnection;
@@ -94,10 +102,11 @@ public class MainActivityFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String query = sharedPreferences.getString(getString(R.string.pref_popular), getString(R.string.pref_general_default));
+            String query = sharedPreferences.getString(getString(R.string.pref_key), getString(R.string.pref_default_value));
+
 
             //Api key for moviedb request
-            String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
+            String apiKey = "MYKEY";
             try {
                 final String FETCH_MOVIE_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
                 final String SORT_BY = "sort_by";
@@ -172,7 +181,13 @@ public class MainActivityFragment extends Fragment {
             mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra("posterPath", movies[position].getDeatilFullPoster());
+                    intent.putExtra("title", movies[position].getOriginalTitle());
+                    intent.putExtra("releaseDate", movies[position].getReleaseDate());
+                    intent.putExtra("overview", movies[position].getOverView());
+                    intent.putExtra("vote", movies[position].getVoteAverage());
+                    startActivity(intent);
                 }
             });
         }
