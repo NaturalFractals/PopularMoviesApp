@@ -32,7 +32,7 @@ import java.util.prefs.PreferenceChangeListener;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements Preference.OnPreferenceChangeListener{
+public class MainActivityFragment extends Fragment {
     // List of movie objects
     Movie[] movies = new Movie[20];
     // GridViewAdapter
@@ -53,7 +53,7 @@ public class MainActivityFragment extends Fragment implements Preference.OnPrefe
     @Override
     public void onStart() {
         super.onStart();
-        updateMovies();
+        updateMovies(1);
     }
 
     @Override
@@ -73,7 +73,12 @@ public class MainActivityFragment extends Fragment implements Preference.OnPrefe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            updateMovies();
+            updateMovies(1);
+            return true;
+        }
+
+        if(id == R.id.action_settings){
+            updateMovies(2);
             return true;
         }
 
@@ -83,30 +88,34 @@ public class MainActivityFragment extends Fragment implements Preference.OnPrefe
     /**
      * Executes the async task of fetching movies from the API
      */
-    public void updateMovies() {
+    public void updateMovies(int i) {
         FetchMovies fetchMovies = new FetchMovies();
-        fetchMovies.execute();
+        if(i == 1) {
+            fetchMovies.execute(getContext().getResources().getString(R.string.action_popular));
+        }
+        if(i == 2){
+            fetchMovies.execute(getContext().getResources().getString(R.string.action_refresh));
+        }
     }
 
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        return false;
-    }
-
-    public class FetchMovies extends AsyncTask<Void, Void, Void> {
+    public class FetchMovies extends AsyncTask<String, Void, Void> {
         BufferedReader reader;
         HttpURLConnection urlConnection;
         JSONArray results;
         JSONObject json;
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... params) {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String query = sharedPreferences.getString(getString(R.string.pref_key), getString(R.string.pref_default_value));
-
+            String query = "";
+            if(params[0] == getContext().getResources().getString(R.string.action_popular)) {
+                query = sharedPreferences.getString(getString(R.string.pref_key), getString(R.string.pref_default_value));
+            } else if (params[0] == getContext().getResources().getString(R.string.action_refresh)){
+                query = sharedPreferences.getString(getString(R.string.pref_key), getString(R.string.pref_value));
+            }
 
             //Api key for moviedb request
-            String apiKey = "MYKEY";
+            String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
             try {
                 final String FETCH_MOVIE_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
                 final String SORT_BY = "sort_by";

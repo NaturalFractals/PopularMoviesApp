@@ -1,5 +1,6 @@
 package com.developer.jc.popularmoviesapp;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,11 +42,20 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        MainActivityFragment fragment = (MainActivityFragment) fm.findFragmentById(R.id.fragment);
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            fragment.updateMovies(1);
             return true;
         }
+
+        if(id == R.id.action_settings){
+            fragment.updateMovies(2);
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

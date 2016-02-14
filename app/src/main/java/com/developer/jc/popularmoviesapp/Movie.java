@@ -22,7 +22,7 @@ public class Movie {
         return "http://image.tmdb.org/t/p/" + "w500" + posterPath;
     }
 
-    public String getDeatilFullPoster() { return "http://image.tmdb.org/t/p/" + "w185" + posterPath; }
+    public String getDeatilFullPoster() { return "http://image.tmdb.org/t/p/" + "w342" + posterPath; }
 
     public String getOverView() {
         return overView;
