@@ -115,7 +115,7 @@ public class MainActivityFragment extends Fragment {
             }
 
             //Api key for moviedb request
-            String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
+            String apiKey = "api_key_here";
             try {
                 final String FETCH_MOVIE_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
                 final String SORT_BY = "sort_by";
