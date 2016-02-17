@@ -2,7 +2,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.developer.jc.popularmoviesapp.DetailActivity">
-    <item android:id="@+id/action_settings"
+    <item android:id="@+id/action_popular"
           android:title="@string/action_popular"
           android:orderInCategory="100"
           app:showAsAction="never"/>
