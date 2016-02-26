@@ -52,10 +52,11 @@ public class GridViewAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.images, parent, false);
         }
 
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
+        ViewHolder holder = new ViewHolder();
+        holder.mImageView = (ImageView) convertView.findViewById(R.id.imageView);
         String url = mMovieList[position].getFullPoster();
         Picasso.with(mContext).load(url)
-                .into(imageView);
+                .into(holder.mImageView);
 
         return convertView;
     }

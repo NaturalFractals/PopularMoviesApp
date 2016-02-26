@@ -55,7 +55,7 @@ public class FetchMovies extends AsyncTask<String, Void, Void> {
         }
 
         //Api key for moviedb request
-        String apiKey = "api_key_goes_here";
+        String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
         try {
             final String FETCH_MOVIE_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
             final String SORT_BY = "sort_by";
@@ -131,6 +131,7 @@ public class FetchMovies extends AsyncTask<String, Void, Void> {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mContext, DetailActivity.class);
+                intent.putExtra("id", movies[position].getMovieId());
                 intent.putExtra("posterPath", movies[position].getDeatilFullPoster());
                 intent.putExtra("title", movies[position].getOriginalTitle());
                 intent.putExtra("releaseDate", movies[position].getReleaseDate());
@@ -154,6 +155,7 @@ public class FetchMovies extends AsyncTask<String, Void, Void> {
             JSONObject currentMovie = results.getJSONObject(i);
             Movie movie = new Movie();
 
+            movie.setMovieId(currentMovie.getInt("id"));
             movie.setPosterPath(currentMovie.getString("poster_path"));
             movie.setOverView(currentMovie.getString("overview"));
             movie.setReleaseDate(currentMovie.getString("release_date"));

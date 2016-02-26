@@ -9,7 +9,15 @@ public class Movie {
     private double voteAverage;
     private String releaseDate;
     private String posterPath;
+    private int movieId;
 
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
     public String getPosterPath() {
         return posterPath;
     }
