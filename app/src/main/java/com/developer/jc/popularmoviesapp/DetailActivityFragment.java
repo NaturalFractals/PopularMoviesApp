@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ public class DetailActivityFragment extends Fragment {
     private TextView movieDescription;
     private ImageView movieImage;
     private TextView movieVoteAverage;
+    private Button movieFavorite;
+
     private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.###");
 
     public DetailActivityFragment() {
@@ -40,6 +43,7 @@ public class DetailActivityFragment extends Fragment {
         movieReleaseDate = (TextView) view.findViewById(R.id.releaseDateLabel);
         movieImage = (ImageView) view.findViewById(R.id.moviePictureLabel);
         movieVoteAverage = (TextView) view.findViewById(R.id.voteAverageLabel);
+        movieFavorite = (Button) view.findViewById(R.id.favoritesButton);
 
         //Set movie rating
         movieVoteAverage.setText(REAL_FORMATTER.format(intent.getExtras().getDouble("vote")));

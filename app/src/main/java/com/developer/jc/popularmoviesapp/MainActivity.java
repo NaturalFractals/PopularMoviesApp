@@ -45,13 +45,18 @@ public class MainActivity extends AppCompatActivity {
         MainActivityFragment fragment = (MainActivityFragment) fm.findFragmentById(R.id.fragment);
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_rating) {
+        if (id == R.id.action_rating){
             fragment.updateMovies(1);
             return true;
         }
 
         if(id == R.id.action_popular){
             fragment.updateMovies(2);
+            return true;
+        }
+
+        if(id == R.id.action_favorites){
+            fragment.updateMovies(3);
             return true;
         }
 

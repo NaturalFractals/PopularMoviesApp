@@ -3,6 +3,7 @@
 
     <string name="action_popular">Popular</string>
     <string name="action_highest_rating">Highest Rating</string>
+    <string name="action_favorites">Favorites</string>
     <string name="title_activity_detail">Movie Details</string>
 
     <!-- API key for themoviedb.org -->
