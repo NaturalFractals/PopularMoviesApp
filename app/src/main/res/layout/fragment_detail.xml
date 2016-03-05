@@ -39,8 +39,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/favoritesButton"
         android:text="Add to Favorites"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignBottom="@+id/voteAverageLabel"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -56,4 +55,5 @@
         android:id="@+id/movieDescriptionLabel"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

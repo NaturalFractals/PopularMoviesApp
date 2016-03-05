@@ -1,34 +1,36 @@
 package com.developer.jc.popularmoviesapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
- * This class represents a Review for a Movie
+ * Created by 3j1ka9cjk119fj2nda on 2/29/2016.
  */
-public class Review {
-    private String id;
-    private String author;
-    private String content;
+public class Review implements Parcelable{
 
-    public String getId() {
-        return id;
+
+    public Review(Parcel in) {
+
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public String getAuthor() {
-        return author;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    public static final Parcelable.Creator<Review> CREATOR
+            = new Parcelable.Creator<Review>() {
+        public Review createFromParcel(Parcel in) {
+            return new Review(in);
+        }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+        public Review[] newArray(int size) {
+            return new Review[size];
+        }
+    };
 }

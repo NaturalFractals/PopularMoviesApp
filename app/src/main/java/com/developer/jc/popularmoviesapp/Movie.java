@@ -1,7 +1,13 @@
 package com.developer.jc.popularmoviesapp;
 
+import android.database.Cursor;
+import android.os.AsyncTask;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by 3j1ka9cjk119fj2nda on 1/23/2016.
+ * This class represents a movie from the database
  */
 public class Movie {
     private String originalTitle;
@@ -10,6 +16,35 @@ public class Movie {
     private String releaseDate;
     private String posterPath;
     private int movieId;
+    private List<Review> reviews;
+    private String[] trailers;
+
+    public Movie() {}
+
+    public Movie(Cursor cursor){
+        this.movieId = cursor.getInt(MainActivityFragment.COL_MOVIE_ID);
+        this.posterPath = cursor.getString(MainActivityFragment.COL_POSTER_PATH);
+        this.overView = cursor.getString(MainActivityFragment.COL_OVERVIEW);
+        this.originalTitle = cursor.getString(MainActivityFragment.COL_ORIGINAL_TITLE);
+        this.voteAverage = cursor.getDouble(MainActivityFragment.COL_VOTE_AVERAGE);
+        this.releaseDate = cursor.getString(MainActivityFragment.COL_RELEASE_DATE);
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public String[] getTrailers() {
+        return trailers;
+    }
+
+    public void setTrailers(String[] trailers) {
+        this.trailers = trailers;
+    }
 
     public int getMovieId() {
         return movieId;

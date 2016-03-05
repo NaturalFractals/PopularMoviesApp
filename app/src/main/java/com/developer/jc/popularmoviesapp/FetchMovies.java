@@ -1,6 +1,5 @@
 package com.developer.jc.popularmoviesapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,8 +22,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-public class FetchMovies extends AsyncTask<String, Void, Void> {
+public class FetchMovies extends AsyncTask<String, Void, Void>{
     BufferedReader reader;
     HttpURLConnection urlConnection;
     JSONArray results;
@@ -36,6 +37,7 @@ public class FetchMovies extends AsyncTask<String, Void, Void> {
     GridView mGridView;
     // GridViewAdapter
     GridViewAdapter mGridViewAdapter;
+
 
     private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
@@ -137,9 +139,12 @@ public class FetchMovies extends AsyncTask<String, Void, Void> {
                 intent.putExtra("releaseDate", movies[position].getReleaseDate());
                 intent.putExtra("overview", movies[position].getOverView());
                 intent.putExtra("vote", movies[position].getVoteAverage());
+                FetchTrailers fetchTrailers = new FetchTrailers(mContext);
+                fetchTrailers.execute(movies[position]);
                 mContext.startActivity(intent);
             }
         });
+
     }
 
     /**
@@ -164,4 +169,5 @@ public class FetchMovies extends AsyncTask<String, Void, Void> {
             movies[i] = (movie);
         }
     }
+
 }

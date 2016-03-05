@@ -30,6 +30,14 @@ public class GridViewAdapter extends BaseAdapter{
         inflater = LayoutInflater.from(mContext);
     }
 
+    public void setData(List<Movie> movies){
+        if(movies != null){
+            for(int i = 0; i < movies.size(); i++) {
+                mMovieList[i] = movies.get(i);
+            }
+        }
+    }
+
     @Override
     public int getCount() {
         return mMovieList.length;
@@ -54,9 +62,11 @@ public class GridViewAdapter extends BaseAdapter{
 
         ViewHolder holder = new ViewHolder();
         holder.mImageView = (ImageView) convertView.findViewById(R.id.imageView);
-        String url = mMovieList[position].getFullPoster();
-        Picasso.with(mContext).load(url)
-                .into(holder.mImageView);
+        if(mMovieList[position] != null) {
+            String url = mMovieList[position].getFullPoster();
+            Picasso.with(mContext).load(url)
+                    .into(holder.mImageView);
+        }
 
         return convertView;
     }

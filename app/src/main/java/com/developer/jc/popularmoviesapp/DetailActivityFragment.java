@@ -1,6 +1,10 @@
 package com.developer.jc.popularmoviesapp;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.developer.jc.popularmoviesapp.content.MoviesContract;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -25,6 +31,12 @@ public class DetailActivityFragment extends Fragment {
     private ImageView movieImage;
     private TextView movieVoteAverage;
     private Button movieFavorite;
+
+    private String mTitle;
+    private String mReleaseDate;
+    private String mDescription;
+    private String mImage;
+    private String mVoteAverage;
 
     private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.###");
 
@@ -45,19 +57,61 @@ public class DetailActivityFragment extends Fragment {
         movieVoteAverage = (TextView) view.findViewById(R.id.voteAverageLabel);
         movieFavorite = (Button) view.findViewById(R.id.favoritesButton);
 
+        mVoteAverage = REAL_FORMATTER.format(intent.getExtras().getDouble("vote"));
+        mTitle = intent.getExtras().getString("title");
+        mDescription = (intent.getExtras().getString("overview"));
+        mReleaseDate = intent.getExtras().getString("releaseDate");
+        mImage = intent.getExtras().getString("posterPath");
         //Set movie rating
-        movieVoteAverage.setText(REAL_FORMATTER.format(intent.getExtras().getDouble("vote")));
+        movieVoteAverage.setText(mVoteAverage);
         //Set movie Title
-        movieTitle.setText(intent.getExtras().getString("title"));
+        movieTitle.setText(mTitle);
         //Set Movie Description
-        movieDescription.setText((intent.getExtras().getString("overview")));
+        movieDescription.setText(mDescription);
         //Set movie release date
-        movieReleaseDate.setText((intent.getExtras().getString("releaseDate")));
+        movieReleaseDate.setText(mReleaseDate);
+
         //Set movie Image
         Picasso.with(getContext())
-                .load(intent.getExtras().getString("posterPath"))
+                .load(mImage)
                 .into(movieImage);
+        //Set Button OnClickListener
+
+        final long stringId = intent.getExtras().getInt("id");
+
+        movieFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertMovie(stringId);
+
+            }
+        });
+
+
 
         return view;
     }
+
+    private void insertMovie(long id){
+        final Uri uri = MoviesContract.MovieEntry.buildMovieUri(id);
+        final Cursor cursor = getActivity().getContentResolver().query(uri,
+                null,
+                null,
+                null,
+                null);
+        if(cursor != null && !cursor.moveToFirst()) {
+            final ContentValues values = new ContentValues();
+
+            values.put(MoviesContract.MovieEntry.COLUMN_MOVIE_ID, id);
+            values.put(MoviesContract.MovieEntry.COLUMN_POSTER_PATH, mImage);
+            values.put(MoviesContract.MovieEntry.COLUMN_OVERVIEW, mDescription);
+            values.put(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE, mReleaseDate);
+            values.put(MoviesContract.MovieEntry.COLUMN_ORIGINAL_TITLE, mTitle);
+            values.put(MoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE, mVoteAverage);
+
+            getActivity().getContentResolver().insert(MoviesContract.MovieEntry.CONTENT_URI, values);
+        }
+        cursor.close();
+    }
+
 }
