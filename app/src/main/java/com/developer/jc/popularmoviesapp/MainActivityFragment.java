@@ -1,6 +1,7 @@
 package com.developer.jc.popularmoviesapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -152,22 +154,35 @@ public class MainActivityFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<Movie> movies) {
-            super.onPostExecute(movies);
-            if(movies != null){
+        protected void onPostExecute(final List<Movie> mMoviesList) {
+            super.onPostExecute(mMoviesList);
+            if(mMoviesList != null){
                 if(mGridViewAdapter != null) {
-                    mGridViewAdapter.setData(movies);
+                    mGridViewAdapter.setData(mMoviesList);
                 }
-                mMoviesList = new Movie[20];
-                if(movies != null) {
-                    for (int i = 0; i < movies.size(); i++) {
-                        mMoviesList[i] = movies.get(i);
+                MainActivityFragment.this.mMoviesList = new Movie[20];
+                if(mMoviesList != null) {
+                    for (int i = 0; i < mMoviesList.size(); i++) {
+                        MainActivityFragment.this.mMoviesList[i] = mMoviesList.get(i);
                     }
                 }
-                if(mMoviesList != null) {
-                    mGridViewAdapter = new GridViewAdapter(getContext(), mMoviesList);
-                    mGridViewAdapter.setData(movies);
+                if(MainActivityFragment.this.mMoviesList != null) {
+                    mGridViewAdapter = new GridViewAdapter(getContext(), MainActivityFragment.this.mMoviesList);
+                    mGridViewAdapter.setData(mMoviesList);
                     mGridView.setAdapter(mGridViewAdapter);
+                    mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(getContext(), DetailActivity.class);
+                            intent.putExtra("id", mMoviesList.get(position).getMovieId());
+                            intent.putExtra("posterPath", mMoviesList.get(position).getDeatilFullPoster());
+                            intent.putExtra("title", mMoviesList.get(position).getOriginalTitle());
+                            intent.putExtra("releaseDate", mMoviesList.get(position).getReleaseDate());
+                            intent.putExtra("overview", mMoviesList.get(position).getOverView());
+                            intent.putExtra("vote", mMoviesList.get(position).getVoteAverage());
+                            getContext().startActivity(intent);
+                        }
+                    });
                 }
             }
 

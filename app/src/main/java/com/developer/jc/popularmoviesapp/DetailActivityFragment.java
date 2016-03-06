@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -75,23 +76,24 @@ public class DetailActivityFragment extends Fragment {
         Picasso.with(getContext())
                 .load(mImage)
                 .into(movieImage);
-        //Set Button OnClickListener
 
         final long stringId = intent.getExtras().getInt("id");
+
+        boolean isFavorite = false;
 
         movieFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertMovie(stringId);
-
             }
         });
-
-
-
         return view;
     }
 
+    /**
+     * Inserts a movie into the database
+     * @param id ID of movie to insert
+     */
     private void insertMovie(long id){
         final Uri uri = MoviesContract.MovieEntry.buildMovieUri(id);
         final Cursor cursor = getActivity().getContentResolver().query(uri,
@@ -113,5 +115,5 @@ public class DetailActivityFragment extends Fragment {
         }
         cursor.close();
     }
-
+    
 }
