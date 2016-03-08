@@ -21,13 +21,14 @@ import java.util.List;
 /**
  * Fetches list of reviews for a Movie from the API
  */
-public class FetchReviews extends AsyncTask<String, Void, List<Review>> {
+public class FetchReviews extends AsyncTask<Movie, Void, Review[]> {
     BufferedReader reader;
     HttpURLConnection urlConnection;
     JSONArray results;
     JSONObject json;
     Context mContext;
-    List<Review> reviews;
+    Review[] reviews;
+    Movie movie;
 
     private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
@@ -36,18 +37,19 @@ public class FetchReviews extends AsyncTask<String, Void, List<Review>> {
     }
 
     @Override
-    protected List<Review> doInBackground(String... params) {
+    protected Review[] doInBackground(Movie... params) {
         //Api key for moviedb request
         String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
         try {
-            final String FETCH_MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie";
-            final String MOIVE_ID = params[0];
+            movie = params[0];
+            final String MOVIE_ID = params[0].getMovieId() + "";
+            final String FETCH_MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/" + MOVIE_ID.trim()
+                    + "/reviews";
+
             final String API_KEY = "api_key";
 
             //create the request to MovieDB api, and then open the connection
             Uri builtUri = Uri.parse(FETCH_MOVIE_BASE_URL).buildUpon()
-                    .appendPath(MOIVE_ID)
-                    .appendPath("/videos")
                     .appendQueryParameter(API_KEY, apiKey)
                     .build();
 
@@ -106,12 +108,26 @@ public class FetchReviews extends AsyncTask<String, Void, List<Review>> {
         return reviews;
     }
 
+    @Override
+    protected void onPostExecute(Review[] reviews) {
+        super.onPostExecute(reviews);
+        movie.setReviews(reviews);
+    }
+
     public void parseReviews(JSONObject json) throws JSONException{
         //results array in main object
         results = json.getJSONArray("results");
         //loop through array and create 20 Movie objects
         for (int i = 0; i < results.length(); i++) {
             JSONObject currentReview = results.getJSONObject(i);
+            Review review = new Review();
+
+            review.setName(currentReview.getString("author"));
+            review.setReview(currentReview.getString("content"));
+
+            if(review.getName() == null || review.getReview() == null){
+                return;
+            }
         }
     }
 

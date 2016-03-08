@@ -1,23 +1,46 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
                 tools:showIn="@layout/activity_detail"
                 tools:context="com.developer.jc.popularmoviesapp.DetailActivityFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/movieTitleLabel"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="20dp"/>
+        android:textSize="30dp"
+        android:textColor="@android:color/white"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/moviePictureLabel"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,14 +63,8 @@
         android:id="@+id/favoritesButton"
         android:text="Add to Favorites"
         android:layout_alignBottom="@+id/voteAverageLabel"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/moviePictureLabel"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,4 +73,28 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"/>
 
-</RelativeLayout>
+    <android.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:foreground="@android:color/black"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/trailerList">
+
+    </ListView>
+
+    <android.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:foreground="@android:color/black"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reviewList">
+
+    </ListView>
+
+    </LinearLayout>

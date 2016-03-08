@@ -11,6 +11,10 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final int HIGHEST_RATING = 1;
+    private final int POPULAR = 2;
+    private final int FAVORITES = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,17 +50,17 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_rating){
-            fragment.updateMovies(1);
+            fragment.updateMovies(HIGHEST_RATING);
             return true;
         }
 
         if(id == R.id.action_popular){
-            fragment.updateMovies(2);
+            fragment.updateMovies(POPULAR);
             return true;
         }
 
         if(id == R.id.action_favorites){
-            fragment.updateMovies(3);
+            fragment.updateMovies(FAVORITES);
             return true;
         }
 

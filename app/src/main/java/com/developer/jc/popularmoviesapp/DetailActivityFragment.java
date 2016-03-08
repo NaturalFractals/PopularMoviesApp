@@ -38,6 +38,7 @@ public class DetailActivityFragment extends Fragment {
     private String mDescription;
     private String mImage;
     private String mVoteAverage;
+    private String[] mTrailers;
 
     private static DecimalFormat REAL_FORMATTER = new DecimalFormat("0.###");
 

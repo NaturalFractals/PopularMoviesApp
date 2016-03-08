@@ -6,31 +6,30 @@ import android.os.Parcelable;
 /**
  * Created by 3j1ka9cjk119fj2nda on 2/29/2016.
  */
-public class Review implements Parcelable{
+public class Review{
+    private String review;
+    private String name;
 
+    public Review(){}
 
-    public Review(Parcel in) {
-
+    public String getReview() {
+        return review;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setReview(String review) {
+        this.review = review;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
+    public String getName() {
+        return name;
     }
 
-    public static final Parcelable.Creator<Review> CREATOR
-            = new Parcelable.Creator<Review>() {
-        public Review createFromParcel(Parcel in) {
-            return new Review(in);
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public Review[] newArray(int size) {
-            return new Review[size];
-        }
-    };
+    public Review(String name, String rev){
+        this.name = name;
+        this.review = rev;
+    }
 }

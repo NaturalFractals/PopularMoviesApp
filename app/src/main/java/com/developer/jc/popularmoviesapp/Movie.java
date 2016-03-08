@@ -16,7 +16,7 @@ public class Movie {
     private String releaseDate;
     private String posterPath;
     private int movieId;
-    private List<Review> reviews;
+    private Review[] reviews;
     private String[] trailers;
 
     public Movie() {}
@@ -30,11 +30,11 @@ public class Movie {
         this.releaseDate = cursor.getString(MainActivityFragment.COL_RELEASE_DATE);
     }
 
-    public List<Review> getReviews() {
+    public Review[] getReviews() {
         return reviews;
     }
 
-    public void setReviews(ArrayList<Review> reviews) {
+    public void setReviews(Review[] reviews) {
         this.reviews = reviews;
     }
 

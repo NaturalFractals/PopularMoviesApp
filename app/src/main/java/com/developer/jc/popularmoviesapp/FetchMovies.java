@@ -141,6 +141,8 @@ public class FetchMovies extends AsyncTask<String, Void, Void>{
                 intent.putExtra("vote", movies[position].getVoteAverage());
                 FetchTrailers fetchTrailers = new FetchTrailers(mContext);
                 fetchTrailers.execute(movies[position]);
+                FetchReviews fetchReviews = new FetchReviews(mContext);
+                fetchReviews.execute(movies[position]);
                 mContext.startActivity(intent);
             }
         });

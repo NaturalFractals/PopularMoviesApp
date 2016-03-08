@@ -44,9 +44,9 @@ public class MainActivityFragment extends Fragment {
 
     public static final int COL_MOVIE_ID = 1;
     public static final int COL_POSTER_PATH = 2;
-    public static final int COL_ORIGINAL_TITLE = 3;
-    public static final int COL_OVERVIEW = 4;
-    public static final int COL_RELEASE_DATE = 5;
+    public static final int COL_OVERVIEW = 3;
+    public static final int COL_RELEASE_DATE = 4;
+    public static final int COL_ORIGINAL_TITLE = 5;
     public static final int COL_VOTE_AVERAGE = 6;
     private Movie[] mMoviesList;
 
@@ -180,6 +180,13 @@ public class MainActivityFragment extends Fragment {
                             intent.putExtra("releaseDate", mMoviesList.get(position).getReleaseDate());
                             intent.putExtra("overview", mMoviesList.get(position).getOverView());
                             intent.putExtra("vote", mMoviesList.get(position).getVoteAverage());
+                            Bundle trailerBundle = new Bundle();
+                            trailerBundle.putStringArray("trailer", mMoviesList.get(position).getTrailers());
+                            intent.putExtra("trailers", trailerBundle);
+//                            Bundle reviewBundle = new Bundle();
+//                            reviewBundle.p("review", mMoviesList.get(position).getReviews());
+//                            intent.putExtra("reviews", reviewBundle);
+
                             getContext().startActivity(intent);
                         }
                     });
