@@ -1,10 +1,8 @@
 package com.developer.jc.popularmoviesapp;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.developer.jc.popularmoviesapp.content.MoviesContract;
 import com.squareup.picasso.Picasso;
@@ -32,6 +30,8 @@ public class DetailActivityFragment extends Fragment {
     private ImageView movieImage;
     private TextView movieVoteAverage;
     private Button movieFavorite;
+    private ListView movieTrailerView;
+    private ListView movieReviewView;
 
     private String mTitle;
     private String mReleaseDate;
@@ -58,12 +58,15 @@ public class DetailActivityFragment extends Fragment {
         movieImage = (ImageView) view.findViewById(R.id.moviePictureLabel);
         movieVoteAverage = (TextView) view.findViewById(R.id.voteAverageLabel);
         movieFavorite = (Button) view.findViewById(R.id.favoritesButton);
+        movieTrailerView = (ListView) view.findViewById(R.id.trailerList);
 
         mVoteAverage = REAL_FORMATTER.format(intent.getExtras().getDouble("vote"));
         mTitle = intent.getExtras().getString("title");
         mDescription = (intent.getExtras().getString("overview"));
         mReleaseDate = intent.getExtras().getString("releaseDate");
         mImage = intent.getExtras().getString("posterPath");
+        mTrailers = intent.getStringArrayExtra("trailers");
+
         //Set movie rating
         movieVoteAverage.setText(mVoteAverage);
         //Set movie Title
@@ -72,6 +75,10 @@ public class DetailActivityFragment extends Fragment {
         movieDescription.setText(mDescription);
         //Set movie release date
         movieReleaseDate.setText(mReleaseDate);
+        //Set Trailer list view
+        TrailerAdapter trailerAdapter = new TrailerAdapter(getContext(), mTrailers);
+        movieTrailerView.setAdapter(trailerAdapter);
+
 
         //Set movie Image
         Picasso.with(getContext())

@@ -39,7 +39,7 @@ public class FetchReviews extends AsyncTask<Movie, Void, Review[]> {
     @Override
     protected Review[] doInBackground(Movie... params) {
         //Api key for moviedb request
-        String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
+        String apiKey = "API KEY HERE";
         try {
             movie = params[0];
             final String MOVIE_ID = params[0].getMovieId() + "";

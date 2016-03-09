@@ -11,7 +11,8 @@ public class Trailer{
     }
 
     public void setKey(String key) {
-        this.key = key;
+        this.key = "http://youtube.com/watch?v=" + key;
+
     }
 
 }

@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 3j1ka9cjk119fj2nda on 1/23/2016.
+ * Adapter class for loading images into a Grid View
+ * @author Jesse Cochran
  */
 public class GridViewAdapter extends BaseAdapter{
     private Context mContext;
     private Movie[] mMovieList;
     private LayoutInflater inflater;
+
     public GridViewAdapter(Context context, Movie[] movies) {
         super();
         this.mContext = context;

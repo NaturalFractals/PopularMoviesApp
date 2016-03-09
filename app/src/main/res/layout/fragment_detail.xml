@@ -1,14 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+            tools:context="com.developer.jc.popularmoviesapp.DetailActivityFragment"
+            tools:showIn="@layout/activity_detail">
+
+<LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
-                android:orientation="vertical"
-                tools:showIn="@layout/activity_detail"
-                tools:context="com.developer.jc.popularmoviesapp.DetailActivityFragment">
+                android:orientation="vertical">
 
     <TextView
         android:layout_width="fill_parent"
@@ -98,3 +101,6 @@
     </ListView>
 
     </LinearLayout>
+</ScrollView>
+
+
