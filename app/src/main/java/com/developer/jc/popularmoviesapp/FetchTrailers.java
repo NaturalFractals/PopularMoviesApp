@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ListView;
+
+import com.developer.jc.popularmoviesapp.adapters.TrailerAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +19,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 /**
  * Fetches information for a Movie's trailers
@@ -29,6 +31,9 @@ public class FetchTrailers extends AsyncTask<Movie, Void, String[]> {
     Context mContext;
     String[] trailers = new String[20];
     Movie movie;
+    private ListView movieTrailerView;
+    private String[] mTrailers;
+    private TrailerAdapter mTrailerAdapter;
 
     private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
@@ -45,7 +50,7 @@ public class FetchTrailers extends AsyncTask<Movie, Void, String[]> {
     @Override
     protected String[] doInBackground(Movie... params) {
         //Api key for moviedb request
-        String apiKey = "API KEY HERE";
+        String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
         try {
             movie = params[0];
             final String MOVIE_ID = params[0].getMovieId() + "";
@@ -126,7 +131,6 @@ public class FetchTrailers extends AsyncTask<Movie, Void, String[]> {
                 return;
             }
             trailers[0 + i] = trailer.getKey();
-            movie.setTrailers(trailers);
         }
     }
 

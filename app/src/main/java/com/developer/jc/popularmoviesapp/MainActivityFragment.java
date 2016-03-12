@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.developer.jc.popularmoviesapp.adapters.GridViewAdapter;
 import com.developer.jc.popularmoviesapp.content.MoviesContract;
 
 import java.util.ArrayList;
@@ -170,6 +171,12 @@ public class MainActivityFragment extends Fragment {
                     mGridViewAdapter = new GridViewAdapter(getContext(), MainActivityFragment.this.mMoviesList);
                     mGridViewAdapter.setData(mMoviesList);
                     mGridView.setAdapter(mGridViewAdapter);
+                    for(int i = 0; i < mMoviesList.size(); i++){
+                        FetchReviews fetchReviews = new FetchReviews(getContext());
+                        fetchReviews.execute(mMoviesList.get(i));
+                        FetchTrailers fetchTrailers = new FetchTrailers(getContext());
+                        fetchTrailers.execute(mMoviesList.get(i));
+                    }
                     mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -180,13 +187,23 @@ public class MainActivityFragment extends Fragment {
                             intent.putExtra("releaseDate", mMoviesList.get(position).getReleaseDate());
                             intent.putExtra("overview", mMoviesList.get(position).getOverView());
                             intent.putExtra("vote", mMoviesList.get(position).getVoteAverage());
+
+                            //Create bundle of trailers to send to detail activity
                             Bundle trailerBundle = new Bundle();
                             trailerBundle.putStringArray("trailer", mMoviesList.get(position).getTrailers());
-                            intent.putExtra("trailers", trailerBundle);
-//                            Bundle reviewBundle = new Bundle();
-//                            reviewBundle.p("review", mMoviesList.get(position).getReviews());
-//                            intent.putExtra("reviews", reviewBundle);
+                            intent.putExtra("trailer", trailerBundle);
 
+                            //Create bundle of reviews to send to detail activty
+                            Bundle reviewBundle = new Bundle();
+                            reviewBundle.putStringArray("reviews", mMoviesList.get(position).getReviews().getReview());
+                            intent.putExtra("reviews", reviewBundle);
+
+                            //Create bundle of names to send to detail activity
+                            Bundle nameBundle = new Bundle();
+                            nameBundle.putStringArray("names", mMoviesList.get(position).getReviews().getName());
+                            intent.putExtra("names", nameBundle);
+
+                            //Start detail activity
                             getContext().startActivity(intent);
                         }
                     });

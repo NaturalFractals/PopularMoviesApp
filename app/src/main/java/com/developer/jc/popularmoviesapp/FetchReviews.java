@@ -21,13 +21,13 @@ import java.util.List;
 /**
  * Fetches list of reviews for a Movie from the API
  */
-public class FetchReviews extends AsyncTask<Movie, Void, Review[]> {
+public class FetchReviews extends AsyncTask<Movie, Void, Review> {
     BufferedReader reader;
     HttpURLConnection urlConnection;
     JSONArray results;
     JSONObject json;
     Context mContext;
-    Review[] reviews;
+    Review reviews;
     Movie movie;
 
     private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
@@ -37,9 +37,9 @@ public class FetchReviews extends AsyncTask<Movie, Void, Review[]> {
     }
 
     @Override
-    protected Review[] doInBackground(Movie... params) {
+    protected Review doInBackground(Movie... params) {
         //Api key for moviedb request
-        String apiKey = "API KEY HERE";
+        String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
         try {
             movie = params[0];
             final String MOVIE_ID = params[0].getMovieId() + "";
@@ -109,7 +109,7 @@ public class FetchReviews extends AsyncTask<Movie, Void, Review[]> {
     }
 
     @Override
-    protected void onPostExecute(Review[] reviews) {
+    protected void onPostExecute(Review reviews) {
         super.onPostExecute(reviews);
         movie.setReviews(reviews);
     }
@@ -117,18 +117,16 @@ public class FetchReviews extends AsyncTask<Movie, Void, Review[]> {
     public void parseReviews(JSONObject json) throws JSONException{
         //results array in main object
         results = json.getJSONArray("results");
+        String[] names = new String[20];
+        String[] rev = new String[20];
         //loop through array and create 20 Movie objects
         for (int i = 0; i < results.length(); i++) {
             JSONObject currentReview = results.getJSONObject(i);
-            Review review = new Review();
 
-            review.setName(currentReview.getString("author"));
-            review.setReview(currentReview.getString("content"));
-
-            if(review.getName() == null || review.getReview() == null){
-                return;
-            }
+            names[i] = (currentReview.getString("author"));
+            rev[i] = (currentReview.getString("content"));
         }
+        reviews = new Review(names,rev);
     }
 
 }

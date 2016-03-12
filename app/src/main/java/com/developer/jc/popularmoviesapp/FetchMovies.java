@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import com.developer.jc.popularmoviesapp.adapters.GridViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +25,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class FetchMovies extends AsyncTask<String, Void, Void>{
     BufferedReader reader;
@@ -57,7 +58,7 @@ public class FetchMovies extends AsyncTask<String, Void, Void>{
         }
 
         //Api key for moviedb request
-        String apiKey = "API KEY HERE";
+        String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
         try {
             final String FETCH_MOVIE_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
             final String SORT_BY = "sort_by";
@@ -129,6 +130,14 @@ public class FetchMovies extends AsyncTask<String, Void, Void>{
         super.onPostExecute(aVoid);
         mGridViewAdapter = new GridViewAdapter(mContext, movies);
         mGridView.setAdapter(mGridViewAdapter);
+        for(int i = 0; i < movies.length; i++){
+            FetchTrailers fetchTrailers = new FetchTrailers(mContext);
+            fetchTrailers.execute(movies[i]);
+        }
+        for(int i = 0; i < movies.length; i++){
+            FetchReviews fetchReviews = new FetchReviews(mContext);
+            fetchReviews.execute(movies[i]);
+        }
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -139,10 +148,22 @@ public class FetchMovies extends AsyncTask<String, Void, Void>{
                 intent.putExtra("releaseDate", movies[position].getReleaseDate());
                 intent.putExtra("overview", movies[position].getOverView());
                 intent.putExtra("vote", movies[position].getVoteAverage());
-                FetchTrailers fetchTrailers = new FetchTrailers(mContext);
-                fetchTrailers.execute(movies[position]);
-                FetchReviews fetchReviews = new FetchReviews(mContext);
-                fetchReviews.execute(movies[position]);
+                //Create bundle of trailers to send to detail activity
+                Bundle bundle = new Bundle();
+                bundle.putStringArray("trailer", movies[position].getTrailers());
+                intent.putExtra("trailer", bundle);
+                //Create arrays of reviews and name of review author
+                String[] names = movies[position].getReviews().getName();
+                String[] reviews = movies[position].getReviews().getReview();
+                //Create bundle of names to send to detail activity
+                Bundle bName = new Bundle();
+                bName.putStringArray("names", names);
+                intent.putExtra("names", bName);
+                //Create bundle of reviews to send to detail activity
+                Bundle bReview = new Bundle();
+                bReview.putStringArray("reviews", reviews);
+                intent.putExtra("reviews", bReview);
+
                 mContext.startActivity(intent);
             }
         });

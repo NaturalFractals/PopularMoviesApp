@@ -1,18 +1,16 @@
-package com.developer.jc.popularmoviesapp;
+package com.developer.jc.popularmoviesapp.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.developer.jc.popularmoviesapp.Movie;
+import com.developer.jc.popularmoviesapp.R;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
