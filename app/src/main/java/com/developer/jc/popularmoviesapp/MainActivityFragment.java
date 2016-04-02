@@ -1,5 +1,6 @@
 package com.developer.jc.popularmoviesapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
+ * @author Jesse Cochran
  */
 public class MainActivityFragment extends Fragment {
     // Number of movies to display
@@ -32,6 +35,7 @@ public class MainActivityFragment extends Fragment {
     GridView mGridView;
     // Grid Adapter
     GridViewAdapter mGridViewAdapter;
+    private boolean mTwoPane;
 
     private static final String[] MOVIE_COLUMNS = {
             MoviesContract.MovieEntry._ID,
@@ -60,7 +64,8 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateMovies(1);
+        mTwoPane = ((MainActivity)getActivity()).isTwoPane();
+        updateMovies(1, mTwoPane);
     }
 
     @Override
@@ -80,17 +85,17 @@ public class MainActivityFragment extends Fragment {
 
         //If spinner ratings is chosen update movies
         if (id == R.id.action_rating) {
-            updateMovies(1);
+            updateMovies(1, mTwoPane);
             return true;
         }
         //If spinner popular is chosen update movies
         if(id == R.id.action_popular){
-            updateMovies(2);
+            updateMovies(2, mTwoPane);
             return true;
         }
         //If spinner favorites is chosen load movies from SQL database
         if(id == R.id.action_favorites){
-            updateMovies(3);
+            updateMovies(3, mTwoPane);
             return true;
         }
 
@@ -100,14 +105,16 @@ public class MainActivityFragment extends Fragment {
     /**
      * Executes the async task of fetching movies from the API
      */
-    public void updateMovies(int i) {
+    public void updateMovies(int i, boolean twoPane) {
+        mTwoPane = twoPane;
         ConnectivityManager cm =
             (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        FragmentActivity a = getActivity();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if(isConnected) {
-            FetchMovies fetchMovies = new FetchMovies(getContext(), mGridView);
+            FetchMovies fetchMovies = new FetchMovies(getContext(), mGridView, mTwoPane, a);
             if (i == 1) {
                 fetchMovies.execute(getContext().getResources().getString(R.string.action_popular));
             }
@@ -123,6 +130,10 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
+    /**
+     * This class fetches the user's favorited movies from the database
+     * @author Jesse Cochran
+     */
     public class FetchFavoriteMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
 
         private Context mContext;
@@ -180,37 +191,58 @@ public class MainActivityFragment extends Fragment {
                     mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(getContext(), DetailActivity.class);
-                            intent.putExtra("id", mMoviesList.get(position).getMovieId());
-                            intent.putExtra("posterPath", mMoviesList.get(position).getDeatilFullPoster());
-                            intent.putExtra("title", mMoviesList.get(position).getOriginalTitle());
-                            intent.putExtra("releaseDate", mMoviesList.get(position).getReleaseDate());
-                            intent.putExtra("overview", mMoviesList.get(position).getOverView());
-                            intent.putExtra("vote", mMoviesList.get(position).getVoteAverage());
+                            if(!mTwoPane) {
+                                Intent intent = new Intent(getContext(), DetailActivity.class);
+                                intent.putExtra("id", mMoviesList.get(position).getMovieId());
+                                intent.putExtra("posterPath", mMoviesList.get(position).getDeatilFullPoster());
+                                intent.putExtra("title", mMoviesList.get(position).getOriginalTitle());
+                                intent.putExtra("releaseDate", mMoviesList.get(position).getReleaseDate());
+                                intent.putExtra("overview", mMoviesList.get(position).getOverView());
+                                intent.putExtra("vote", mMoviesList.get(position).getVoteAverage());
 
-                            //Create bundle of trailers to send to detail activity
-                            Bundle trailerBundle = new Bundle();
-                            trailerBundle.putStringArray("trailer", mMoviesList.get(position).getTrailers());
-                            intent.putExtra("trailer", trailerBundle);
+                                //Create bundle of trailers to send to detail activity
+                                Bundle trailerBundle = new Bundle();
+                                trailerBundle.putStringArray("trailer", mMoviesList.get(position).getTrailers());
+                                intent.putExtra("trailer", trailerBundle);
 
-                            //Create bundle of reviews to send to detail activty
-                            Bundle reviewBundle = new Bundle();
-                            reviewBundle.putStringArray("reviews", mMoviesList.get(position).getReviews().getReview());
-                            intent.putExtra("reviews", reviewBundle);
+                                //Create bundle of reviews to send to detail activty
+                                Bundle reviewBundle = new Bundle();
+                                reviewBundle.putStringArray("reviews", mMoviesList.get(position).getReviews().getReview());
+                                intent.putExtra("reviews", reviewBundle);
 
-                            //Create bundle of names to send to detail activity
-                            Bundle nameBundle = new Bundle();
-                            nameBundle.putStringArray("names", mMoviesList.get(position).getReviews().getName());
-                            intent.putExtra("names", nameBundle);
+                                //Create bundle of names to send to detail activity
+                                Bundle nameBundle = new Bundle();
+                                nameBundle.putStringArray("names", mMoviesList.get(position).getReviews().getName());
+                                intent.putExtra("names", nameBundle);
 
-                            //Start detail activity
-                            getContext().startActivity(intent);
+                                //Start detail activity
+                                getContext().startActivity(intent);
+                            } else {
+                                Bundle args = new Bundle();
+                                args.putInt("id", mMoviesList.get(position).getMovieId());
+                                args.putString("posterPath", mMoviesList.get(position).getDeatilFullPoster());
+                                args.putString("title", mMoviesList.get(position).getOriginalTitle());
+                                args.putString("releaseDate", mMoviesList.get(position).getReleaseDate());
+                                args.putString("overview", mMoviesList.get(position).getOverView());
+                                args.putDouble("vote", mMoviesList.get(position).getVoteAverage());
+                                args.putStringArray("trailer", mMoviesList.get(position).getTrailers());
+                                args.putStringArray("reviews", mMoviesList.get(position).getReviews().getReview());
+                                args.putStringArray("names", mMoviesList.get(position).getReviews().getName());
+
+                                DetailActivityFragment fragment = new DetailActivityFragment();
+                                fragment.setArguments(args);
+
+                                getActivity().getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_detail_twopane, fragment, "DF")
+                                        .commit();
+                            }
                         }
                     });
                 }
             }
 
         }
+
     }
 
 

@@ -2,6 +2,7 @@ package com.developer.jc.popularmoviesapp;
 
 /**
  * Represents a Trailer for a Movie
+ * @author Jesse Cochran
  */
 public class Trailer{
     private String key;

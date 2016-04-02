@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * Fetches list of reviews for a Movie from the API
+ * @author Jesse Cochran
  */
 public class FetchReviews extends AsyncTask<Movie, Void, Review> {
     BufferedReader reader;
@@ -39,7 +40,7 @@ public class FetchReviews extends AsyncTask<Movie, Void, Review> {
     @Override
     protected Review doInBackground(Movie... params) {
         //Api key for moviedb request
-        String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
+        String apiKey = "MyKEY";
         try {
             movie = params[0];
             final String MOVIE_ID = params[0].getMovieId() + "";

@@ -1,5 +1,7 @@
 package com.developer.jc.popularmoviesapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,12 +17,29 @@ public class MainActivity extends AppCompatActivity {
     private final int POPULAR = 2;
     private final int FAVORITES = 3;
 
+    public boolean mTwoPane;
+    private static final String MAIN_TAG = "";
+    private static final String DF_TAG = "DFTAG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if(findViewById(R.id.fragment_detail_twopane) != null) {
+            mTwoPane = true;
+            if(savedInstanceState == null) {
+                DetailActivityFragment detailActivityFragment = new DetailActivityFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_detail_twopane, detailActivityFragment)
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -30,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
     }
 
     @Override
@@ -50,21 +70,26 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_rating){
-            fragment.updateMovies(HIGHEST_RATING);
+            fragment.updateMovies(HIGHEST_RATING, mTwoPane);
             return true;
         }
 
         if(id == R.id.action_popular){
-            fragment.updateMovies(POPULAR);
+            fragment.updateMovies(POPULAR, mTwoPane);
             return true;
         }
 
         if(id == R.id.action_favorites){
-            fragment.updateMovies(FAVORITES);
+            fragment.updateMovies(FAVORITES, mTwoPane);
             return true;
         }
 
 
         return super.onOptionsItemSelected(item);
     }
+
+    public boolean isTwoPane(){
+        return mTwoPane;
+    }
+
 }

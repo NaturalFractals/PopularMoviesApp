@@ -22,6 +22,7 @@ import java.net.URL;
 
 /**
  * Fetches information for a Movie's trailers
+ * @author Jesse Cochran
  */
 public class FetchTrailers extends AsyncTask<Movie, Void, String[]> {
     BufferedReader reader;
@@ -50,7 +51,7 @@ public class FetchTrailers extends AsyncTask<Movie, Void, String[]> {
     @Override
     protected String[] doInBackground(Movie... params) {
         //Api key for moviedb request
-        String apiKey = "ad5fab0d067530588fcc840ad9ff35de";
+        String apiKey = "MYKEY";
         try {
             movie = params[0];
             final String MOVIE_ID = params[0].getMovieId() + "";

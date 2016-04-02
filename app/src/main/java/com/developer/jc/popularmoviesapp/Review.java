@@ -4,7 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by 3j1ka9cjk119fj2nda on 2/29/2016.
+ * This class represents a Movie Review
+ * @author Jesse Cochran
  */
 public class Review{
     private String[] review;
