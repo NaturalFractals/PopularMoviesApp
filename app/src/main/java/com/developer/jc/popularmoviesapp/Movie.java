@@ -1,10 +1,8 @@
 package com.developer.jc.popularmoviesapp;
 
 import android.database.Cursor;
-import android.os.AsyncTask;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.developer.jc.popularmoviesapp.activities.MainActivityFragment;
 
 /**
  * This class represents a movie from the database

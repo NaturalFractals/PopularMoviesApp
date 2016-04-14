@@ -30,6 +30,12 @@ public class GridViewAdapter extends BaseAdapter{
         inflater = LayoutInflater.from(mContext);
     }
 
+    /**
+     * This method takes a list of movies as the parameter and sets the local instance
+     * variable to this list of movies. This allows the adapter to properly access the
+     * list of movies.
+     * @param movies List of movies from fetchMovies task
+     */
     public void setData(List<Movie> movies){
         if(movies != null){
             for(int i = 0; i < movies.size(); i++) {
@@ -59,7 +65,7 @@ public class GridViewAdapter extends BaseAdapter{
         if(convertView == null){
             convertView = inflater.inflate(R.layout.images, parent, false);
         }
-
+        //Create new view holder, and use picasso to load movies into the view holder
         ViewHolder holder = new ViewHolder();
         holder.mImageView = (ImageView) convertView.findViewById(R.id.imageView);
         if(mMovieList[position] != null) {

@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.developer.jc.popularmoviesapp.MainActivityFragment"
+        android:name="com.developer.jc.popularmoviesapp.activities.MainActivityFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
