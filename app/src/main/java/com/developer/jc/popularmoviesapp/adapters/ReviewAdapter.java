@@ -57,9 +57,15 @@ public class ReviewAdapter extends BaseAdapter{
             convertView = mInflater.inflate(R.layout.list_item_review, parent, false);
         }
 
-        TextView reviewText = (TextView) convertView.findViewById(R.id.reviewLabel);
-        String review = "\"" + mReviews[position] + "\"" + "\n -" + mNames[position];
-        reviewText.setText(review);
+        if(mReviews[position] == null || mNames[position] == null) {
+            TextView reviewText = (TextView) convertView.findViewById(R.id.reviewLabel);
+            String review = "No Review Available";
+            reviewText.setText(review);
+        } else {
+            TextView reviewText = (TextView) convertView.findViewById(R.id.reviewLabel);
+            String review = "\"" + mReviews[position] + "\"" + "\n -" + mNames[position];
+            reviewText.setText(review);
+        }
 
         return convertView;
 
