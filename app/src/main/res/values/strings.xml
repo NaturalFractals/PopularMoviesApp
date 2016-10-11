@@ -20,5 +20,7 @@
     <string name="pref_mark_favorite">Save as Favorite</string>
     <!-- String for favorites button-->
     <string name="pref_unmark_favorite">Delete from Favorites</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

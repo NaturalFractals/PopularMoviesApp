@@ -24,7 +24,6 @@ public class TrailerAdapter extends BaseAdapter{
         super();
         this.mContext = context;
         this.trailers = trls;
-
         inflater = LayoutInflater.from(mContext);
     }
 

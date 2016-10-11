@@ -32,8 +32,18 @@
         </activity>
 
         <provider
-            android:authorities="com.developer.jc.popularmoviesapp"
-            android:name=".content.MoviesProvider"/>
+            android:name=".content.MoviesProvider"
+            android:authorities="com.developer.jc.popularmoviesapp" />
+
+        <receiver android:name=".services.NewAppWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
